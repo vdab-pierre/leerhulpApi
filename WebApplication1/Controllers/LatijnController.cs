@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Net;
 using System.Net.Http;
+using System.Threading.Tasks;
 using System.Web.Http;
 using WebApplication1.Models;
 using WebApplication1.Models.latijn;
@@ -12,6 +13,9 @@ namespace WebApplication1.Controllers
     public class LatijnController : ApiController
     {
         private leerhulpEntities _db = new leerhulpEntities();
+
+        //get methods
+
         [Route("api/latijn/caputs")]
         public IHttpActionResult GetAllCaputs()
         {
@@ -24,6 +28,21 @@ namespace WebApplication1.Controllers
                             }).ToList();
             return Ok(deCaputs);
         }
+
+        [Route("api/latijn/caputs/{caputId}")]
+        public IHttpActionResult GetCaput(int caputId)
+        {
+            var deCaput = (from c in _db.caputs
+                           where c.id == caputId
+                           select new CaputDto
+                           {
+                               id = c.id,
+                               naam = c.naam
+                           }).SingleOrDefault();
+            return Ok(deCaput);
+                           
+        }
+
         [Route("api/latijn/woorden")]
         public IHttpActionResult GetAllWoorden()
         {
@@ -93,6 +112,16 @@ namespace WebApplication1.Controllers
             }
             return Ok(deWoorden);
         }
+
+        //posts
+        [Route("api/latijn/postwoord")]
+        [HttpPost]
+        public IHttpActionResult PostWoord([FromBody]WoordDto woord)
+        {
+            return Ok(woord);
+            
+        }
+
         protected override void Dispose(bool disposing)
         {
             if (disposing)
