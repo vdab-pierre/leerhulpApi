@@ -1,0 +1,256 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<edmx:Edmx Version="3.0" xmlns:edmx="http://schemas.microsoft.com/ado/2009/11/edmx">
+  <!-- EF Runtime content -->
+  <edmx:Runtime>
+    <!-- SSDL content -->
+    <edmx:StorageModels>
+      <Schema Namespace="leerhulpModel.Store" Provider="System.Data.SqlClient" ProviderManifestToken="2012" Alias="Self" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
+        <EntityType Name="aanvullendeInfo">
+          <Key>
+            <PropertyRef Name="id" />
+          </Key>
+          <Property Name="id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="term" Type="nvarchar" MaxLength="50" />
+          <Property Name="woordId" Type="int" Nullable="false" />
+        </EntityType>
+        <EntityType Name="caputs">
+          <Key>
+            <PropertyRef Name="id" />
+          </Key>
+          <Property Name="id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="naam" Type="nchar" MaxLength="10" Nullable="false" />
+        </EntityType>
+        <EntityType Name="vertalingen">
+          <Key>
+            <PropertyRef Name="id" />
+          </Key>
+          <Property Name="id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="term" Type="nvarchar" MaxLength="50" />
+          <Property Name="woordId" Type="int" Nullable="false" />
+        </EntityType>
+        <EntityType Name="woorden">
+          <Key>
+            <PropertyRef Name="id" />
+          </Key>
+          <Property Name="id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="term" Type="nvarchar" MaxLength="50" />
+          <Property Name="caputId" Type="int" Nullable="false" />
+          <Property Name="genus" Type="nchar" MaxLength="1" />
+        </EntityType>
+        <Association Name="FK_aanvullendeInfo_woorden">
+          <End Role="woorden" Type="Self.woorden" Multiplicity="1" />
+          <End Role="aanvullendeInfo" Type="Self.aanvullendeInfo" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="woorden">
+              <PropertyRef Name="id" />
+            </Principal>
+            <Dependent Role="aanvullendeInfo">
+              <PropertyRef Name="woordId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_vertalingen_woorden">
+          <End Role="woorden" Type="Self.woorden" Multiplicity="1" />
+          <End Role="vertalingen" Type="Self.vertalingen" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="woorden">
+              <PropertyRef Name="id" />
+            </Principal>
+            <Dependent Role="vertalingen">
+              <PropertyRef Name="woordId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_woorden_caputs">
+          <End Role="caputs" Type="Self.caputs" Multiplicity="1" />
+          <End Role="woorden" Type="Self.woorden" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="caputs">
+              <PropertyRef Name="id" />
+            </Principal>
+            <Dependent Role="woorden">
+              <PropertyRef Name="caputId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <EntityContainer Name="leerhulpModelStoreContainer">
+          <EntitySet Name="aanvullendeInfo" EntityType="Self.aanvullendeInfo" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="caputs" EntityType="Self.caputs" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="vertalingen" EntityType="Self.vertalingen" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="woorden" EntityType="Self.woorden" Schema="dbo" store:Type="Tables" />
+          <AssociationSet Name="FK_aanvullendeInfo_woorden" Association="Self.FK_aanvullendeInfo_woorden">
+            <End Role="woorden" EntitySet="woorden" />
+            <End Role="aanvullendeInfo" EntitySet="aanvullendeInfo" />
+          </AssociationSet>
+          <AssociationSet Name="FK_vertalingen_woorden" Association="Self.FK_vertalingen_woorden">
+            <End Role="woorden" EntitySet="woorden" />
+            <End Role="vertalingen" EntitySet="vertalingen" />
+          </AssociationSet>
+          <AssociationSet Name="FK_woorden_caputs" Association="Self.FK_woorden_caputs">
+            <End Role="caputs" EntitySet="caputs" />
+            <End Role="woorden" EntitySet="woorden" />
+          </AssociationSet>
+        </EntityContainer>
+      </Schema>
+    </edmx:StorageModels>
+    <!-- CSDL content -->
+    <edmx:ConceptualModels>
+      <Schema Namespace="leerhulpModel" Alias="Self" annotation:UseStrongSpatialTypes="false" xmlns:annotation="http://schemas.microsoft.com/ado/2009/02/edm/annotation" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm">
+        <EntityType Name="aanvullendeInfo">
+          <Key>
+            <PropertyRef Name="id" />
+          </Key>
+          <Property Name="id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="term" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="woordId" Type="Int32" Nullable="false" />
+          <NavigationProperty Name="woorden" Relationship="Self.FK_aanvullendeInfo_woorden" FromRole="aanvullendeInfo" ToRole="woorden" />
+        </EntityType>
+        <EntityType Name="caputs">
+          <Key>
+            <PropertyRef Name="id" />
+          </Key>
+          <Property Name="id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="naam" Type="String" MaxLength="10" FixedLength="true" Unicode="true" Nullable="false" />
+          <NavigationProperty Name="woorden" Relationship="Self.FK_woorden_caputs" FromRole="caputs" ToRole="woorden" />
+        </EntityType>
+        <EntityType Name="vertalingen">
+          <Key>
+            <PropertyRef Name="id" />
+          </Key>
+          <Property Name="id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="term" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="woordId" Type="Int32" Nullable="false" />
+          <NavigationProperty Name="woorden" Relationship="Self.FK_vertalingen_woorden" FromRole="vertalingen" ToRole="woorden" />
+        </EntityType>
+        <EntityType Name="woorden">
+          <Key>
+            <PropertyRef Name="id" />
+          </Key>
+          <Property Name="id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="term" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="caputId" Type="Int32" Nullable="false" />
+          <Property Name="genus" Type="String" MaxLength="1" FixedLength="true" Unicode="true" />
+          <NavigationProperty Name="aanvullendeInfo" Relationship="Self.FK_aanvullendeInfo_woorden" FromRole="woorden" ToRole="aanvullendeInfo" />
+          <NavigationProperty Name="caputs" Relationship="Self.FK_woorden_caputs" FromRole="woorden" ToRole="caputs" />
+          <NavigationProperty Name="vertalingen" Relationship="Self.FK_vertalingen_woorden" FromRole="woorden" ToRole="vertalingen" />
+        </EntityType>
+        <Association Name="FK_aanvullendeInfo_woorden">
+          <End Role="woorden" Type="Self.woorden" Multiplicity="1" />
+          <End Role="aanvullendeInfo" Type="Self.aanvullendeInfo" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="woorden">
+              <PropertyRef Name="id" />
+            </Principal>
+            <Dependent Role="aanvullendeInfo">
+              <PropertyRef Name="woordId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_woorden_caputs">
+          <End Role="caputs" Type="Self.caputs" Multiplicity="1" />
+          <End Role="woorden" Type="Self.woorden" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="caputs">
+              <PropertyRef Name="id" />
+            </Principal>
+            <Dependent Role="woorden">
+              <PropertyRef Name="caputId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_vertalingen_woorden">
+          <End Role="woorden" Type="Self.woorden" Multiplicity="1" />
+          <End Role="vertalingen" Type="Self.vertalingen" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="woorden">
+              <PropertyRef Name="id" />
+            </Principal>
+            <Dependent Role="vertalingen">
+              <PropertyRef Name="woordId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <EntityContainer Name="leerhulpEntities" annotation:LazyLoadingEnabled="true">
+          <EntitySet Name="aanvullendeInfo" EntityType="Self.aanvullendeInfo" />
+          <EntitySet Name="caputs" EntityType="Self.caputs" />
+          <EntitySet Name="vertalingen" EntityType="Self.vertalingen" />
+          <EntitySet Name="woorden" EntityType="Self.woorden" />
+          <AssociationSet Name="FK_aanvullendeInfo_woorden" Association="Self.FK_aanvullendeInfo_woorden">
+            <End Role="woorden" EntitySet="woorden" />
+            <End Role="aanvullendeInfo" EntitySet="aanvullendeInfo" />
+          </AssociationSet>
+          <AssociationSet Name="FK_woorden_caputs" Association="Self.FK_woorden_caputs">
+            <End Role="caputs" EntitySet="caputs" />
+            <End Role="woorden" EntitySet="woorden" />
+          </AssociationSet>
+          <AssociationSet Name="FK_vertalingen_woorden" Association="Self.FK_vertalingen_woorden">
+            <End Role="woorden" EntitySet="woorden" />
+            <End Role="vertalingen" EntitySet="vertalingen" />
+          </AssociationSet>
+        </EntityContainer>
+      </Schema>
+    </edmx:ConceptualModels>
+    <!-- C-S mapping content -->
+    <edmx:Mappings>
+      <Mapping Space="C-S" xmlns="http://schemas.microsoft.com/ado/2009/11/mapping/cs">
+        <EntityContainerMapping StorageEntityContainer="leerhulpModelStoreContainer" CdmEntityContainer="leerhulpEntities">
+          <EntitySetMapping Name="aanvullendeInfo">
+            <EntityTypeMapping TypeName="leerhulpModel.aanvullendeInfo">
+              <MappingFragment StoreEntitySet="aanvullendeInfo">
+                <ScalarProperty Name="id" ColumnName="id" />
+                <ScalarProperty Name="term" ColumnName="term" />
+                <ScalarProperty Name="woordId" ColumnName="woordId" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="caputs">
+            <EntityTypeMapping TypeName="leerhulpModel.caputs">
+              <MappingFragment StoreEntitySet="caputs">
+                <ScalarProperty Name="id" ColumnName="id" />
+                <ScalarProperty Name="naam" ColumnName="naam" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="vertalingen">
+            <EntityTypeMapping TypeName="leerhulpModel.vertalingen">
+              <MappingFragment StoreEntitySet="vertalingen">
+                <ScalarProperty Name="id" ColumnName="id" />
+                <ScalarProperty Name="term" ColumnName="term" />
+                <ScalarProperty Name="woordId" ColumnName="woordId" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="woorden">
+            <EntityTypeMapping TypeName="leerhulpModel.woorden">
+              <MappingFragment StoreEntitySet="woorden">
+                <ScalarProperty Name="id" ColumnName="id" />
+                <ScalarProperty Name="term" ColumnName="term" />
+                <ScalarProperty Name="caputId" ColumnName="caputId" />
+                <ScalarProperty Name="genus" ColumnName="genus" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+        </EntityContainerMapping>
+      </Mapping>
+    </edmx:Mappings>
+  </edmx:Runtime>
+  <!-- EF Designer content (DO NOT EDIT MANUALLY BELOW HERE) -->
+  <Designer xmlns="http://schemas.microsoft.com/ado/2009/11/edmx">
+    <Connection>
+      <DesignerInfoPropertySet>
+        <DesignerProperty Name="MetadataArtifactProcessing" Value="EmbedInOutputAssembly" />
+      </DesignerInfoPropertySet>
+    </Connection>
+    <Options>
+      <DesignerInfoPropertySet>
+        <DesignerProperty Name="ValidateOnBuild" Value="true" />
+        <DesignerProperty Name="EnablePluralization" Value="false" />
+        <DesignerProperty Name="IncludeForeignKeysInModel" Value="true" />
+        <DesignerProperty Name="UseLegacyProvider" Value="false" />
+        <DesignerProperty Name="CodeGenerationStrategy" Value="None" />
+      </DesignerInfoPropertySet>
+    </Options>
+    <!-- Diagram content (shape and connector positions) -->
+    <Diagrams></Diagrams>
+  </Designer>
+</edmx:Edmx>
